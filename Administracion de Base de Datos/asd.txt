@@ -1,0 +1,11 @@
+Instalar linux uefi : https://gnumanager.wordpress.com/2016/02/04/uefi-gnu-linux/
+Softwarre necesarios:
+	-oracle 11g Express Edition
+	-SQL Developer
+	
+	
+	
+Memoria:
+	- PGA: Zona de memoria que usa oracle para asignarselo a las aplicaciones.
+	- SGA: Area global de sistema. 
+	

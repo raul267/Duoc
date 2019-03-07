@@ -1,0 +1,89 @@
+-- modificar ip. 
+Ir terminal 
+cd /etc
+gedit host y cambiar ip
+
+
+-- /etc/sysctl.conf
+
+# Parámetros del Kernel para la instalación de Oracle 11g
+
+kernel.shmmni = 4096 
+kernel.shmmax = 4398046511104  
+kernel.shmall = 1073741824  
+kernel.sem = 250 32000 100 128
+fs.aio-max-nr = 1048576
+fs.file-max = 6815744
+net.ipv4.ip_local_port_range = 9000 65500
+net.core.rmem_default = 262144
+net.core.rmem_max = 4194304
+net.core.wmem_default = 262144
+net.core.wmem_max = 1048586
+
+-- incorporar modificaciones al kernel
+/sbin/sysctl -p
+
+
+-- /etc/security/limits.conf  
+
+# Limites del shell para usuarios oracle y grid
+oracle         soft    nproc           2047
+oracle         hard    nproc          16384
+oracle         soft    nofile          4096
+oracle         hard    nofile         65536
+oracle         soft    stack          10240
+
+
+--Instalacion
+--crear grupos
+ groupadd oinstall, dba, oper
+ useradd oracle -g oinstall -G dba,oper
+ 
+
+-- /home/oracle/.bash_profile
+
+# Oracle Settings
+export TMP=/tmp
+TMPDIR=$TMP; export TMPDIR
+
+ORACLE_HOSTNAME=dbtest.duoc.cl; export ORACLE_HOSTNAME
+ORACLE_BASE=/u01/app/oracle; export ORACLE_BASE
+ORACLE_HOME=$ORACLE_BASE/product/11.2.0/db_home1; export ORACLE_HOME
+ORACLE_SID=orcl;export ORACLE_SID
+ORACLE_UNQNAME=orcl;export ORACLE_UNQNAME
+NLS_LANG=AMERICAN_AMERICA.AL32UTF8; export NLS_LANG
+
+PATH=/usr/sbin:$PATH:$ORACLE_HOME/bin; export PATH
+LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib; export LD_LIBRARY_PATH
+CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib; export CLASSPATH
+
+umask 022
+
+
+-- verificar paquetes instalados
+
+rpm -q --qf '%{NAME}-%{VERSION}-%{RELEASE}(%{ARCH})\n' binutils \
+compat-libstdc++-33 \
+elfutils-libelf \
+elfutils-libelf-devel \
+gcc \
+gcc-c++ \
+glibc \
+glibc-common \
+glibc-devel \
+glibc-headers \
+ksh \
+libaio \
+libaio-devel \
+libgcc \
+libstdc++ \
+libstdc++-devel \
+make \
+sysstat \
+unixODBC \
+unixODBC-devel
+--Deshabilitar el secure linux
+-- “/etc/selinux/config
+cambiar selinux = disabled
+
+deshabilitar firewall
