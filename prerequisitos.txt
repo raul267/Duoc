@@ -1,9 +1,11 @@
 -- modificar ip. 
 Ir terminal 
+ifconfig
+
 cd /etc
-gedit host y cambiar ip
+gedit hosts y cambiar ip
 
-
+Modificar kernel
 -- /etc/sysctl.conf
 
 # Parámetros del Kernel para la instalación de Oracle 11g
@@ -23,7 +25,7 @@ net.core.wmem_max = 1048586
 -- incorporar modificaciones al kernel
 /sbin/sysctl -p
 
-
+--Modificart shell
 -- /etc/security/limits.conf  
 
 # Limites del shell para usuarios oracle y grid
@@ -38,6 +40,8 @@ oracle         soft    stack          10240
 --crear grupos
  groupadd oinstall, dba, oper
  useradd oracle -g oinstall -G dba,oper
+ 
+ -- ls -all ver archivos ocultos 
  
 
 -- /home/oracle/.bash_profile
@@ -58,6 +62,16 @@ LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib; export LD_LIBRARY_PATH
 CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib; export CLASSPATH
 
 umask 022
+
+--crear directorio
+mkdir -p /u01/app/oracle/product/11.2.0/db_home1
+--Otorgar permisos al usuarios
+chown -R oracle:oinstall /u01
+
+--
+chmod -R 775 /u01
+
+
 
 
 -- verificar paquetes instalados
@@ -82,8 +96,22 @@ make \
 sysstat \
 unixODBC \
 unixODBC-devel
+
 --Deshabilitar el secure linux
 -- “/etc/selinux/config
 cambiar selinux = disabled
 
 deshabilitar firewall
+
+--Otorgar grafica a oracle
+xhost +
+
+--Iniciar sesion
+su - nombreUsuario
+
+
+ir a la caroeta Medios
+cd /mnt/hgfs/Medios/database/
+
+Inicioar instalador
+./runInstaller
